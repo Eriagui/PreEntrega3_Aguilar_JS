@@ -1,0 +1,89 @@
+/*---------- Inicio Reset ------------------*/
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/*---------- Fin Reset ---------------------*/
+
+
+/*--------- Inicio Clases Texto ----------*/
+.white-text{
+    color: white;
+}
+
+.centrado {
+    display: flex;
+    justify-content: center;
+}
+/*-------- Fin Clases Texto --------------*/
+
+
+/*--------------Inicio Header--------------------------*/
+header {
+    width: 100%;
+    background-color: black;
+    padding: 10px 20px 10px 20px;
+    position: sticky;
+    top: 0px;
+    z-index: 10;
+}
+
+header .Logo {
+    display: inline-block;
+    width: 68px;
+    height: 80px;
+}
+
+header .agrandar:hover {
+    font-size: x-large;
+    color: white;
+}
+
+/*---------------Fin Header-------------------------*/
+/*------------------Inicio Footer--------------------------*/
+footer {
+    width: 115%;
+    background-color: black;
+    padding: 20px 0px 0px 0px;
+}
+
+@media (max-width: 1000px) {
+    .redes {
+        display: flex;
+        justify-content: center;
+    }
+}
+
+/*---------------------Fin Footer------------------------------*/
+
+/*------------------Fin Botones------------------------------*/
+.icon {
+    font-size: 25px;
+    margin: 0px 20px 0px 0px;
+    color: white;
+}
+
+.icon:hover {
+    font-size: 30px;
+}
+
+.imagen{
+    object-fit: contain;
+}
+
+.btn-negro{
+    background-color: black;
+    color: white;
+}
+
+.btn-rojo{
+    background-color: red;
+}
+
+.btn-selected{
+    border-color: blue;
+    border-style: solid;
+    border-width: 5px;
+}
