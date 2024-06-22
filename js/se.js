@@ -1,14 +1,9 @@
-//En el Local Storage debería de estar el sistema y el carrito.
-
 //Lo primero que se tiene que hacer es cargar el sistema
+let sistema_inicial = new Sistema
+let sistema_guardado = JSON.parse(localStorage.getItem("saved_system"))
 //Si en el local storage no hay un sistema guardado, entonces se toma el que se tiene en el archivo sistema
-let sistema = new Sistema
-
-
-//Luego cargamos el carrito
-//Si en el local storage no hay un carrito guardado, entonces lo iniciamos vacio
-// Para eso nos ayudamos del operador Nullish
-let carrito = (JSON.parse(localStorage.getItem("saved_cart")) ?? [])
+//Para eso nos ayudamos del operador Nullish
+let sistema = sistema_guardado ?? sistema_inicial
 
 let clases_seleccionado = []
 let precio
@@ -48,10 +43,9 @@ boton.forEach((btn, num) => {
             color = get_color()
 
             // Se obtiene el precio del equipo seleccionado
-            precio = sistema.get_price("SE", capacidad, color)
 
-            if (!isNaN(precio)) { // Evita mostrar el undefined que se genera cuando hace falta aún seleccionar otras características 
-                // Se muestra el precio en la página
+            if (capacidad && color) { // El precio sólo se calcula si ya se terminó de configurar el Iphone
+                precio = get_price("SE", capacidad, color)
                 let precio_texto = "$ " + precio
                 document.querySelector(".precio").innerText = precio_texto
             }
@@ -74,15 +68,15 @@ boton.forEach((btn, num) => {
 // Cuando se apriete el botón, agregar al carrito, se muestra un alert notificando el evento
 let boton_agregar = document.querySelector(".btn-primary")
 boton_agregar.addEventListener("click", () => {
-    
+
     // Si el precio no se ha podido determinar es porque el Iphone no se ha terminado de configurar
-    if (isNaN(precio)){
+    if (isNaN(precio)) {
         alert("Para poder agregar, primero debes terminar de configurar tu Iphone")
-    } else{  // Si el Iphone ya está configurado, se puede agregar al carrito
-        let producto = sistema.get_product("SE", capacidad, color)
-        carrito.push(producto)  // se agrega el producto al carrito
-        let carrito_texto = JSON.stringify(carrito) // el carrito se convierte a texto para poderlo almacenar en el local storage
-        localStorage.setItem("saved_cart", carrito_texto) // se almacena el carrito en el local storage
+    } else {  // Si el Iphone ya está configurado, se puede agregar al carrito
+        let producto = get_product("SE", capacidad, color)
+        sistema.carrito.push(producto)  // se agrega el producto al carrito
+        let sistema_texto = JSON.stringify(sistema) // el carrito se convierte a texto para poderlo almacenar en el local storage
+        localStorage.setItem("saved_system", sistema_texto) // se almacena el carrito en el local storage
         alert("Producto agregado al carrito") // se le notifica al usuario que el producto ha sido agregado
     }
 })
@@ -136,4 +130,22 @@ function unselect_other_btns(seleccionado) { //Quita la categoría de selecciona
             }
         }
     })
+}
+
+function get_price(modelo, capacidad, color) { // Obtiene el precio del producto seleccionado
+    let producto = get_product(modelo, capacidad, color)
+    return producto.precio
+}
+
+function get_product(modelo, capacidad, color) {  //Obtiene el producto seleccionado
+    let producto
+    sistema.productos.forEach((prod, num) => {
+        let modelo_producto = sistema.productos[num].modelo
+        let capacidad_producto = sistema.productos[num].capacidad
+        let color_producto = sistema.productos[num].color.toLowerCase()
+        if (modelo_producto == modelo && capacidad_producto == capacidad && color_producto == color) {
+            producto = sistema.productos[num]
+        }
+    })
+    return producto
 }
