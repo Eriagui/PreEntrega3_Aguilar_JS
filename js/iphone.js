@@ -1,5 +1,6 @@
 class Iphone{
-    constructor(modelo, capacidad, color, precio, existencias){
+    constructor(id, modelo, capacidad, color, precio, existencias){
+        this.id = id
         this.modelo = modelo
         this.capacidad = capacidad
         this.color = color

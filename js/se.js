@@ -5,6 +5,9 @@ let sistema_guardado = JSON.parse(localStorage.getItem("saved_system"))
 //Para eso nos ayudamos del operador Nullish
 let sistema = sistema_guardado ?? sistema_inicial
 
+// Lo segundo es cargar los artículos en el icono y la lista del carrito
+actualizar_icono_carrito()
+
 let clases_seleccionado = []
 let precio
 let capacidad
@@ -65,7 +68,7 @@ boton.forEach((btn, num) => {
     }
 })
 
-// Cuando se apriete el botón, agregar al carrito, se muestra un alert notificando el evento
+// Cuando se apriete el botón, agregar al carrito, se agrega el producto al carrito
 let boton_agregar = document.querySelector(".btn-primary")
 boton_agregar.addEventListener("click", () => {
 
@@ -74,10 +77,8 @@ boton_agregar.addEventListener("click", () => {
         alert("Para poder agregar, primero debes terminar de configurar tu Iphone")
     } else {  // Si el Iphone ya está configurado, se puede agregar al carrito
         let producto = get_product("SE", capacidad, color)
-        sistema.carrito.push(producto)  // se agrega el producto al carrito
-        let sistema_texto = JSON.stringify(sistema) // el carrito se convierte a texto para poderlo almacenar en el local storage
-        localStorage.setItem("saved_system", sistema_texto) // se almacena el carrito en el local storage
-        alert("Producto agregado al carrito") // se le notifica al usuario que el producto ha sido agregado
+        agregar_carrito(producto)
+        actualizar_icono_carrito()
     }
 })
 
@@ -148,4 +149,34 @@ function get_product(modelo, capacidad, color) {  //Obtiene el producto seleccio
         }
     })
     return producto
+}
+
+function agregar_carrito(producto) {
+    let cantidad = 1
+    if (sistema.carrito.find((elm) => elm.id == producto.id)) { //Si el artículo ya exite en el carrito, se aumenta la cantidad en 1
+        sistema.carrito.forEach((elm, num) => {
+            if (sistema.carrito[num].id = producto.id) {
+                sistema.carrito[num].cantidad++
+            }
+        })
+    } else { // Si el producto no está aún en el carrito, se agrega como un nuevo artículo
+        let articulo = new Articulo(producto.id, cantidad)
+        sistema.carrito.push(articulo)  // se agrega el artículo al carrito
+    }
+
+    let sistema_texto = JSON.stringify(sistema) // el carrito se convierte a texto para poderlo almacenar en el local storage
+    localStorage.setItem("saved_system", sistema_texto) // se almacena el carrito en el local storage
+}
+
+function cantidad_carrito() {
+    total_articulos = 0
+    sistema.carrito.forEach((elm) =>{
+        total_articulos = total_articulos + elm.cantidad
+    })
+    return total_articulos
+}
+
+function actualizar_icono_carrito(){
+    let total = cantidad_carrito()
+    document.querySelector(".cantidad-carrito").innerText = total
 }
