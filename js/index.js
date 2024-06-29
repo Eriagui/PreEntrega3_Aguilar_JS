@@ -4,18 +4,18 @@ let sistema_guardado = JSON.parse(localStorage.getItem("saved_system"))
 //Para eso nos ayudamos del operador Nullish
 let sistema = sistema_guardado ?? sistema_inicial
 
-let modelo = ["SE", "12", "13", "14", "15", "15 Plus", "15 Pro", "15 Pro Max"]
-let tag = ["#precio_SE", "#precio_12", "#precio_13", "#precio_14", "#precio_15", "#precio_15_Plus", "#precio_15_Pro", "#precio_15_Pro_Max"]
+let modelo_array = ["SE", "12", "13", "14", "15", "15 Plus", "15 Pro", "15 Pro Max"]
+let tag_array = ["#precio_SE", "#precio_12", "#precio_13", "#precio_14", "#precio_15", "#precio_15_Plus", "#precio_15_Pro", "#precio_15_Pro_Max"]
 
-modelo.forEach((elm, num) => {
+modelo_array.forEach((elm, num) => {
     console.log(elm, num)
-    write_price(elm, tag[num])
+    write_price(elm, tag_array[num])
 })
 
 function write_price(modelo, tag) {
     //Se obtiene un arreglo del modelo de interés
     console.log("el modelo buscado es " + modelo)
-    let modelo_encontrado = sistema.productos.filter((elm) => elm.modelo == modelo)
+    let modelo_encontrado = sistema.productos.filter((elm2) => elm2.modelo == modelo)
     console.log(modelo_encontrado)
     // Se ordena en función a su precio en forma ascendente
     modelo_encontrado.sort((a, b) => a.precio - b.precio)
